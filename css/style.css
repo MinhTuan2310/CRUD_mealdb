@@ -1,0 +1,32 @@
+body {
+  padding-top: 100px;
+}
+.container {
+  max-width: 30%;
+}
+.table {
+  border: 1px solid #ccc;
+  text-align: center;
+  text-transform: capitalize;
+}
+.table>:not(caption)>*>* {
+  border: none;
+}
+table thead tr {
+  color: white;
+}
+
+tr td span:first-of-type {
+  border-right: 2px solid #999;
+}
+
+tr td span {
+  padding: 0 10px;
+  cursor: pointer;
+}
+tr td:last-of-type {
+  text-align: right;
+}
+td {
+  width: calc(100% / 4)
+}
