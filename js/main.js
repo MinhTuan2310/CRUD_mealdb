@@ -1,4 +1,4 @@
-function addMealList(searchName) {
+function addMealList(searchName, mode, trElement) {
   if (arguments.length < 1 || searchName.length === 0) return;
 
   const temp = searchName;
@@ -12,10 +12,15 @@ function addMealList(searchName) {
         name: temp,
         count: data.meals?.length || 0,
       });
+      if (mode === "Update") {
+        updateItem(mealList, trElement);
+        return;
+      }
+
       renderItem(mealList, "mealList");
     })
     .catch((err) => {
-      console.error(err)
+      console.error(err);
     });
 }
 
@@ -39,7 +44,7 @@ function createMealItem(mealItem) {
 
   //add event for edit and del
   editButton.addEventListener("click", () => {
-    handlerEditClick(mealItem.name);
+    handlerEditClick(mealItem.name, mealItem.count);
   });
   removeButton.addEventListener("click", () => {
     handlerRemoveClick(mealItem.name, mealItem.count);
@@ -47,11 +52,10 @@ function createMealItem(mealItem) {
 
   return trElement;
 }
-function handlerEditClick(name) {
+function handlerEditClick(name, count) {
   // show update modal
-  showModal("Edit meal", "Update", name);
-  // populate temp
-  //handle click update button
+  // console.log(name, count);
+  showModalForm("Edit meal", name, count);
 }
 function handlerRemoveClick(name, count) {
   // show delete modal
@@ -116,9 +120,15 @@ function showModalForm(title, name, count) {
   if (!modalFormDesc) return;
   const modalButton = modalForm.querySelector(".btn");
   if (!modalButton) return;
+  const modalFormText = modalForm.querySelector(".form-text");
+  if (!modalFormText) return;
+  const form = modalForm.querySelector("form");
+  if (!form) return;
 
   // show modal
   modalForm.style.display = "block";
+  // add name trElement into form element
+  form.dataset.name = name;
 
   // add props for modal form
   if (title === "Add new") {
@@ -127,13 +137,16 @@ function showModalForm(title, name, count) {
     modalButton.textContent = "Add";
   }
 
-  if (title === "Eadit meal") {
+  if (title === "Edit meal") {
     // show title
     modalFormTitle.textContent = title;
     // populate name into input value
-
-    // show the count
-
+    const inputForm = modalForm.querySelector("input");
+    inputForm.value = capitalize(name);
+    // show the desc
+    modalFormText.textContent = `The count is ${count || 0}`;
+    // hide desc text
+    modalFormDesc.textContent = "";
     // update buttontext
     modalButton.textContent = "Update";
   }
@@ -141,15 +154,43 @@ function showModalForm(title, name, count) {
 
 function handlerAddButton() {
   // show modal
-  showModalForm("Add new", 1);
+  showModalForm("Add new");
 }
 
 function handlerFormSubmit(event) {
-  const modalForm = document.querySelector("form");
+  const modalForm = document.querySelector(".modal-form");
   const inputForm = modalForm.querySelector("input[type=text]");
+  const form = modalForm.querySelector("form");
+  const formText = modalForm.querySelector('.form-text');
 
-  addMealList(inputForm.value);
-  inputForm.value = '';
+  if (modalForm.querySelector(".btn").textContent === "Add") {
+    addMealList(inputForm.value);
+  }
+
+  if (modalForm.querySelector(".btn").textContent === "Update") {
+    // udpdate mealList
+    const trElementList = document.querySelectorAll("#mealList > tr");
+    trElementList.forEach((trElement) => {
+      if (trElement.dataset.name === form.dataset.name) {
+        addMealList(inputForm.value, "Update", trElement);
+      }
+    });
+
+    // close modalForm
+    modalForm.style.display = "none";
+  }
+
+  // reset
+  inputForm.value = "";
+  formText.textContent = "";
+}
+
+function updateItem(mealList, trElement) {
+  const nameTrElement = trElement.querySelector(".name");
+  const countTrElement = trElement.querySelector(".count");
+
+  nameTrElement.textContent = mealList[0].name;
+  countTrElement.textContent = mealList[0].count;
 }
 
 (() => {
@@ -192,18 +233,12 @@ function handlerFormSubmit(event) {
     });
   }
 
-  // handler add new button
-  // const modalFromButton = document.querySelector(".modal-form .btn");
-  // if (modalFromButton) {
-  //   modalFromButton.addEventListener("click", handlerFormButton);
-  // }
-
   const form = document.querySelector("form");
-  if(!form) return;
+  if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     handlerFormSubmit();
-  })
+  });
 })();
