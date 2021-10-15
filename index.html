@@ -13,6 +13,7 @@
 
 <body>
   <div class="container">
+    <button id='add' type="button" class="btn btn-outline-secondary">Add new</button>
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
@@ -43,6 +44,28 @@
     </div>
   </div>
   
+  <div class="modal-form" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal-form" aria-label="Close"></button>
+        </div>
+        <form>
+          <div class="mb-3 px-3 modal-body">
+            <small class="pb-2 d-inline-block"></small>
+            <input type="text" class="form-control" id="exampleInputEmail1"
+            placeholder="Meal name"
+            aria-describedby="emailHelp">
+            <div  class="form-text"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
  <template id="MealTemplate" >

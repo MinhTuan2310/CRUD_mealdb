@@ -30,3 +30,11 @@ tr td:last-of-type {
 td {
   width: calc(100% / 4)
 }
+button#add {
+  display: block;
+  margin-left: auto;
+  margin-bottom: 10px;
+}
+.modal-form {
+  display: none;
+}
