@@ -40,14 +40,16 @@ function createMealItem(mealItem) {
   noTdElement.textContent = 1;
   nameTdElement.textContent = mealItem.name;
   countTdElement.textContent = mealItem.count;
+  // update name & count into tr Element
   trElement.dataset.name = mealItem.name;
+  trElement.dataset.count = mealItem.count;
 
   //add event for edit and del
   editButton.addEventListener("click", (e) => {
-    handlerEditClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count || mealItem.count);
+    handlerEditClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count);
   });
   removeButton.addEventListener("click", (e) => {
-    handlerRemoveClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count || mealItem.count);
+    handlerRemoveClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count);
   });
 
   return trElement;
