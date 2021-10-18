@@ -43,8 +43,8 @@ function createMealItem(mealItem) {
   trElement.dataset.name = mealItem.name;
 
   //add event for edit and del
-  editButton.addEventListener("click", () => {
-    handlerEditClick(mealItem.name, mealItem.count);
+  editButton.addEventListener("click", (e) => {
+    handlerEditClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count || mealItem.count);
   });
   removeButton.addEventListener("click", () => {
     handlerRemoveClick(mealItem.name, mealItem.count);
@@ -124,6 +124,8 @@ function showModalForm(title, name, count) {
   if (!modalFormText) return;
   const form = modalForm.querySelector("form");
   if (!form) return;
+  const inputForm = modalForm.querySelector("input");
+  if(!inputForm) return;
 
   // show modal
   modalForm.style.display = "block";
@@ -132,6 +134,9 @@ function showModalForm(title, name, count) {
 
   // add props for modal form
   if (title === "Add new") {
+    inputForm.value = '';
+    modalFormText.textContent = '';
+
     modalFormTitle.textContent = title;
     modalFormDesc.textContent = "Input the meal name will count";
     modalButton.textContent = "Add";
@@ -141,7 +146,6 @@ function showModalForm(title, name, count) {
     // show title
     modalFormTitle.textContent = title;
     // populate name into input value
-    const inputForm = modalForm.querySelector("input");
     inputForm.value = capitalize(name);
     // show the desc
     modalFormText.textContent = `The count is ${count || 0}`;
@@ -176,6 +180,9 @@ function handlerFormSubmit(event) {
       }
     });
 
+    // update input form
+
+
     // close modalForm
     modalForm.style.display = "none";
   }
@@ -191,6 +198,11 @@ function updateItem(mealList, trElement) {
 
   nameTrElement.textContent = mealList[0].name;
   countTrElement.textContent = mealList[0].count;
+
+  
+  nameTrElement.parentNode.dataset.name = nameTrElement.textContent;
+  countTrElement.parentNode.dataset.count = countTrElement.textContent;
+  console.log(countTrElement.parentNode.dataset.count);
 }
 
 (() => {
@@ -229,6 +241,7 @@ function updateItem(mealList, trElement) {
   const closeModalFormButton = document.querySelector(".modal-form .btn-close");
   if (closeModalFormButton) {
     closeModalFormButton.addEventListener("click", () => {
+
       modalForm.style.display = "none";
     });
   }
