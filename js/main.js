@@ -46,8 +46,8 @@ function createMealItem(mealItem) {
   editButton.addEventListener("click", (e) => {
     handlerEditClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count || mealItem.count);
   });
-  removeButton.addEventListener("click", () => {
-    handlerRemoveClick(mealItem.name, mealItem.count);
+  removeButton.addEventListener("click", (e) => {
+    handlerRemoveClick(e.target.parentNode.parentNode.dataset.name, e.target.parentNode.parentNode.dataset.count || mealItem.count);
   });
 
   return trElement;
@@ -81,10 +81,6 @@ function showModal(title, textButton, name, count) {
     )}" with the count is ${count || 0} ?`;
   }
 
-  if (name.toLowerCase() === "update") {
-    // show input
-    // update text
-  }
   modal.dataset.name = "";
   modal.dataset.name = name;
 
